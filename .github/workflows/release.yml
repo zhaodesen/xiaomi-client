@@ -78,4 +78,24 @@ jobs:
           # Windows signing (optional):
           WIN_CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
           WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
-        run: npm run ${{ matrix.electron-task }}
+        shell: bash
+        run: |
+          for name in \
+            CSC_LINK \
+            CSC_KEY_PASSWORD \
+            APPLE_ID \
+            APPLE_APP_SPECIFIC_PASSWORD \
+            APPLE_TEAM_ID \
+            WIN_CSC_LINK \
+            WIN_CSC_KEY_PASSWORD
+          do
+            if [ -z "${!name:-}" ]; then
+              unset "$name"
+            fi
+          done
+
+          if [ -z "${CSC_LINK:-}" ]; then
+            export CSC_IDENTITY_AUTO_DISCOVERY=false
+          fi
+
+          npm run ${{ matrix.electron-task }}
