@@ -1,0 +1,47 @@
+{
+  "name": "mimo-desktop",
+  "private": true,
+  "version": "1.0.0",
+  "description": "MiMo Lab — Cross-platform multimodal AI desktop client powered by Xiaomi MiMo.",
+  "main": "out/main/index.js",
+  "author": {
+    "name": "MiMo Lab",
+    "email": "noreply@example.com"
+  },
+  "license": "MIT",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview",
+    "typecheck:web": "tsc --noEmit -p tsconfig.web.json",
+    "typecheck:node": "tsc --noEmit -p tsconfig.node.json",
+    "typecheck": "npm run typecheck:web && npm run typecheck:node",
+    "sidecar:dev": "python sidecar/main.py",
+    "sidecar:build:win": "pyinstaller --clean --noconfirm sidecar/mimo-sidecar.spec --distpath sidecar-dist/win",
+    "sidecar:build:mac": "pyinstaller --clean --noconfirm sidecar/mimo-sidecar.spec --distpath sidecar-dist/mac",
+    "pack:win": "npm run build && electron-builder --win --publish never",
+    "pack:mac": "npm run build && electron-builder --mac --publish never",
+    "release:win": "npm run build && electron-builder --win --publish always",
+    "release:mac": "npm run build && electron-builder --mac --publish always"
+  },
+  "dependencies": {
+    "electron-updater": "^6.3.9"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.19",
+    "electron": "^31.2.1",
+    "electron-builder": "^24.13.3",
+    "electron-vite": "^2.3.0",
+    "lucide-react": "^0.408.0",
+    "postcss": "^8.4.39",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwindcss": "^3.4.6",
+    "typescript": "^5.5.3",
+    "vite": "^5.3.3"
+  }
+}

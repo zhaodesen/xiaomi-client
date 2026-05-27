@@ -1,0 +1,57 @@
+appId: com.mimolab.desktop
+productName: MiMo Lab
+copyright: Copyright © 2026 MiMo Lab
+
+directories:
+  output: release
+  buildResources: build
+
+files:
+  - out/**/*
+  - package.json
+  - "!**/*.map"
+
+# The Python sidecar binaries are produced by PyInstaller into sidecar-dist/.
+# Only the platform-specific one is shipped into each installer.
+extraResources:
+  - from: sidecar-dist/${os}
+    to: sidecar
+    filter:
+      - "**/*"
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  artifactName: MiMo-Lab-Setup-${version}.${ext}
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  deleteAppDataOnUninstall: false
+
+mac:
+  target:
+    - target: dmg
+      arch:
+        - x64
+        - arm64
+    - target: zip
+      arch:
+        - x64
+        - arm64
+  category: public.app-category.productivity
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  # Sign & notarize via env vars in CI:
+  #   CSC_LINK, CSC_KEY_PASSWORD, APPLE_ID, APPLE_APP_SPECIFIC_PASSWORD, APPLE_TEAM_ID
+  artifactName: MiMo-Lab-${version}-${arch}.${ext}
+
+dmg:
+  sign: false
+
+publish:
+  provider: github
+  releaseType: release
